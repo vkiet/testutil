@@ -1,0 +1,16 @@
+{
+  "server": "http://127.0.0.1:8080/",
+  "mongo": {
+    "server": "127.0.0.1",
+    "port": 27017,
+    "options": {},
+    "authentication": {
+      "username": "",
+      "password": ""
+    },
+    "database": {
+      "name": "shopspot",
+      "options": {}
+    }
+  }
+}

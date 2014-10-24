@@ -1,0 +1,27 @@
+{
+  "name": "shopspot.mock",
+  "version": "0.0.1",
+  "author": "ShopSpot <shopspot@shopspotapp.com>",
+  "description": "Mock for testing",
+  "main": "main.js",
+  "dependencies": {
+    "async": "0.1.x",
+    "mongodb": "1.2.x",
+    "request": "^2.37.0"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-express-server": "^0.4.19",
+    "grunt-mocha-test": "^0.11.0",
+    "grunt-run": "^0.2.4",
+    "mocha": "1.7.x",
+    "restler": "2.0.x",
+    "should": "1.2.x",
+    "sinon": "1.5.x",
+    "winston": "^0.8.1"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8"
+  }
+}
