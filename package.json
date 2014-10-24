@@ -1,5 +1,5 @@
 {
-  "name": "shopspot.mock",
+  "name": "shopspot.testutil",
   "version": "0.0.1",
   "author": "ShopSpot <shopspot@shopspotapp.com>",
   "description": "Mock for testing",
