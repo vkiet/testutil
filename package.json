@@ -18,7 +18,8 @@
     "restler": "2.0.x",
     "should": "1.2.x",
     "sinon": "1.5.x",
-    "winston": "^0.8.1"
+    "winston": "^0.8.1",
+    "wrench": "^1.5.8"
   },
   "license": "MIT",
   "engines": {
