@@ -6,9 +6,9 @@
   "main": "main.js",
   "dependencies": {
     "async": "0.1.x",
-    "mongodb": "^1.4.19",
-    "request": "^2.37.0",
-    "winston": "^0.8.1"
+    "mongodb": "^1.4.19",    "request": "^2.37.0",
+    "wrench": "^1.5.8"
+
   },
   "devDependencies": {
     "grunt-contrib-watch": "^0.6.1",
