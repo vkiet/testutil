@@ -7,7 +7,9 @@
   "dependencies": {
     "async": "0.1.x",
     "mongodb": "^1.4.19",
-    "request": "^2.37.0"
+    "request": "^2.37.0",
+    "wrench": "^1.5.8",
+    "winston": "^0.8.1"
   },
   "devDependencies": {
     "grunt-contrib-watch": "^0.6.1",
@@ -17,8 +19,7 @@
     "mocha": "1.7.x",
     "restler": "2.0.x",
     "should": "1.2.x",
-    "sinon": "1.5.x",
-    "winston": "^0.8.1"
+    "sinon": "1.5.x"
   },
   "license": "MIT",
   "engines": {
