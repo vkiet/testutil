@@ -5,20 +5,26 @@ var util = require('util'),
 
 var MockDatabase = require('../lib/MockDatabase');
 var externalConfig;
+var test = {};
 
 describe('FunctionalTestMockDatabase Default Config', function () {
 
 	describe('#setup', function () {
 		var mockDatabase = new MockDatabase();
 		it('should success with default config', function (done) {
-			var database = mockDatabase.setup();
 
-			should.exists(database);
-			database.databaseName.should.equal('shopspot');
-			database.serverConfig.host.should.equal('127.0.0.1');
-			database.serverConfig.port.should.equal(27017);
+			mockDatabase.setup(function (error, database) {
+				should.not.exists(error);
+				should.exists(database);
 
-			done();
+				database.databaseName.should.equal('shopspot');
+				database.serverConfig.host.should.equal('127.0.0.1');
+				database.serverConfig.port.should.equal(27017);
+				
+				test.database = database;
+
+				done();
+			});
 		});
 
 	});
@@ -28,16 +34,16 @@ describe('FunctionalTestMockDatabase Default Config', function () {
 		var mockDatabase = new MockDatabase();
 
 		it('should success', function (done) {
-			var database = mockDatabase.setup();
-			database.open(function (error, client) {
-				mockDatabase.init(client, function (error) {
-					client.collections(function (error, collections) {
-						should.not.exist(error);
-						done();
-					});
-					
+			var database = test.database;
+			
+			mockDatabase.init(database, function (error) {
+				database.collections(function (error, collections) {
+					collections.length.should.above(0);
+					should.not.exist(error);
+					done();
 				});
 			});
+			
 		});
 	});
 
@@ -46,17 +52,36 @@ describe('FunctionalTestMockDatabase Default Config', function () {
 		var mockDatabase = new MockDatabase();
 
 		it('should success', function (done) {
-			var database = mockDatabase.setup();
-			database.open(function (error, client) {
-				mockDatabase.clear(client, function (error) {
-					client.collections(function (error, collections) {
-						should.not.exist(error);
-						done();
-					});
+			var database = test.database;
+			
+			mockDatabase.clear(database, function (error) {
+				database.collections(function (error, collections) {
+					should.not.exist(error);
+					collections.length.should.equal(1);
+					collections[0].s.name.should.equal('system.indexes')
+					
+					done();
 				});
 			});
 		});
 	});
+
+	describe('setupWithData', function () {
+		this.timeout(10000);
+		var mockDatabase = new MockDatabase();
+
+		it('should success', function (done) {
+			
+			mockDatabase.setupWithData(function (error, database) {
+				database.collections(function (error, collections) {
+					should.not.exist(error);
+					collections.length.should.above(1);
+					
+					done();
+				});
+			});
+		});
+	})
 });
 
 describe('FunctionalTestMockDatabase External Config', function () {
@@ -74,51 +99,48 @@ describe('FunctionalTestMockDatabase External Config', function () {
 		      'name': 'shopspot_mock_test',
 		      'options': {}
 		    }	
-			},
-			fixturePath: path.join(__dirname ,'MockFixture.json')
+			}
 		}
+		var fixturePath = path.join(__dirname ,'MockFixture.json');
+		test.mockDatabase = new MockDatabase(externalConfig.db, fixturePath);
+		
 		done();
 	});
 
 	describe('#setup', function () {
-		var mockDatabase = new MockDatabase();
-
+	
 		it('should success with external config', function (done) {
-			var config = externalConfig.db;
-			mockDatabase.dbConfig = config;
-			var database = mockDatabase.setup();
-			should.exists(database);
-			database.databaseName.should.equal(config.database.name);
-			database.serverConfig.host.should.equal(config.server);
-			database.serverConfig.port.should.equal(config.port);
+			
+			test.mockDatabase.setup(function (error, database) {
+				should.not.exists(error);
+				should.exists(database);
 
-			done();
+				database.databaseName.should.equal('shopspot_mock_test');
+				database.serverConfig.host.should.equal('127.0.0.1');
+				database.serverConfig.port.should.equal(27017);
+				
+				test.database = database;
+
+				done();
+			});
 		});
 
 	});
 
 	describe('#init', function () {
 		this.timeout(10000);
-		var mockDatabase = new MockDatabase();
 
-		it('should success with external fixture', function (done) {
-			var fixturePath = externalConfig.fixturePath;
-			mockDatabase.fixturePath = fixturePath;
-			var database = mockDatabase.setup();
-
-			database.open(function (error, client) {
-				mockDatabase.init(client, function (error) {
-					client.collections(function (error, collections) {
-						should.not.exist(error);
-						setTimeout(function() {
-							// collection in fixture equal 2
-							// but include system.index 1 
-							collections.length.should.equal(3);
-							done();
-						}, 5000);
-					});
+		it('should success', function (done) {
+			var database = test.database;
+			
+			test.mockDatabase.init(database, function (error) {
+				database.collections(function (error, collections) {
+					collections.length.should.above(0);
+					should.not.exist(error);
+					done();
 				});
 			});
+			
 		});
 	});
 
@@ -127,15 +149,19 @@ describe('FunctionalTestMockDatabase External Config', function () {
 		var mockDatabase = new MockDatabase();
 
 		it('should success', function (done) {
-			var database = mockDatabase.setup();
-			database.open(function (error, client) {
-				mockDatabase.clear(client, function (error) {
-					client.collections(function (error, collections) {
-						should.not.exist(error);
-						done();
-					});
+			var database = test.database;
+			
+			mockDatabase.clear(database, function (error) {
+				database.collections(function (error, collections) {
+					should.not.exist(error);
+					collections.length.should.equal(1);
+					collections[0].s.name.should.equal('system.indexes')
+					
+					done();
+					
 				});
 			});
+
 		});
 	});
 });

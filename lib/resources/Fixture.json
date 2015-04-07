@@ -1,4 +1,7 @@
-{
+{ "vees":[{
+    "_id": "4f48e3d38c47fd6507000008",
+    "email": "aaa"
+  }],
   "users": [{
       "_id": "4f48e3d38c47fd6507000008",
       "email": "soulski@sample.com",
