@@ -57,6 +57,7 @@ describe('FunctionalTestMockDatabase Default Config', function () {
 			mockDatabase.clear(database, function (error) {
 				database.collections(function (error, collections) {
 					should.not.exist(error);
+
 					collections.length.should.equal(1);
 					collections[0].s.name.should.equal('system.indexes')
 					
@@ -75,6 +76,7 @@ describe('FunctionalTestMockDatabase Default Config', function () {
 			mockDatabase.setupWithData(function (error, database) {
 				database.collections(function (error, collections) {
 					should.not.exist(error);
+
 					collections.length.should.above(1);
 					
 					done();
@@ -137,6 +139,97 @@ describe('FunctionalTestMockDatabase External Config', function () {
 				database.collections(function (error, collections) {
 					collections.length.should.above(0);
 					should.not.exist(error);
+					done();
+				});
+			});
+			
+		});
+	});
+
+	describe('#clear', function () {
+		this.timeout(10000);
+		var mockDatabase = new MockDatabase();
+
+		it('should success', function (done) {
+			var database = test.database;
+			
+			mockDatabase.clear(database, function (error) {
+				database.collections(function (error, collections) {
+					should.not.exist(error);
+					collections.length.should.equal(1);
+					collections[0].s.name.should.equal('system.indexes')
+					
+					done();
+					
+				});
+			});
+
+		});
+	});
+});
+
+
+describe('FunctionalTestMockDatabase External Config With Additional', function () {
+	before(function (done) {
+		externalConfig = {
+			db: {
+				'server': '127.0.0.1',
+		    'port': 27017,
+		    'options': {},
+		    'authentication': {
+		      'username': '',
+		      'password': ''
+		    },
+		    'database': {
+		      'name': 'shopspot_mock_additional_test',
+		      'options': {}
+		    }	
+			}
+		}
+		var fixturePath = path.join(__dirname ,'MockFixture.json');
+		var additionalFixturePath = path.join(__dirname ,'AdditionalMockFixture.json');
+		test.mockDatabase = new MockDatabase(externalConfig.db, fixturePath, additionalFixturePath);
+		
+		done();
+	});
+
+	describe('#setup', function () {
+	
+		it('should success with external config', function (done) {
+			
+			test.mockDatabase.setup(function (error, database) {
+				should.not.exists(error);
+				should.exists(database);
+
+				database.databaseName.should.equal('shopspot_mock_additional_test');
+				database.serverConfig.host.should.equal('127.0.0.1');
+				database.serverConfig.port.should.equal(27017);
+				
+				test.database = database;
+
+				done();
+			});
+		});
+
+	});
+
+	describe('#init', function () {
+		this.timeout(10000);
+
+		it('should success', function (done) {
+			var database = test.database;
+			
+			test.mockDatabase.init(database, function (error) {
+				database.collections(function (error, collections) {
+					collections.length.should.above(0);
+					should.not.exist(error);
+
+					database.collection('users', {}, function (error, collection) {
+						collection.find({}).toArray(function (error, users) {
+							users.length.should.equal(4);
+						});
+					});
+
 					done();
 				});
 			});
