@@ -18,6 +18,7 @@
     "grunt-express-server": "^0.4.19",
     "grunt-mocha-test": "^0.11.0",
     "grunt-run": "^0.2.4",
+    "jit-grunt": "^0.10.0",
     "mocha": "1.7.x",
     "restler": "2.0.x",
     "should": "1.2.x",
