@@ -5,12 +5,11 @@
   "description": "Mock for testing",
   "main": "main.js",
   "dependencies": {
-    "async": "^1.5.0",
-    "kerberos": "0.0.17",
-    "mongodb": "^2.1.1",
-    "request": "^2.67.0",
-    "winston": "^0.8.3",
-    "wrench": "^1.5.8"
+    "async": "^2.5.0",
+    "kerberos": "0.0.23",
+    "mongodb": "^2.2.33",
+    "request": "^2.83.0",
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
